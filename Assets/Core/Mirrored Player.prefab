@@ -11,13 +11,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mirrored Player
       objectReference: {fileID: 0}
+    - target: {fileID: 7444849447196878498, guid: 7b38dcbbf4aa078428deb11c000d5735, type: 3}
+      propertyPath: m_TagString
+      value: MirroredPlayer
+      objectReference: {fileID: 0}
     - target: {fileID: 7444849447196878502, guid: 7b38dcbbf4aa078428deb11c000d5735, type: 3}
       propertyPath: m_RootOrder
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7444849447196878502, guid: 7b38dcbbf4aa078428deb11c000d5735, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -11
       objectReference: {fileID: 0}
     - target: {fileID: 7444849447196878502, guid: 7b38dcbbf4aa078428deb11c000d5735, type: 3}
       propertyPath: m_LocalPosition.y
