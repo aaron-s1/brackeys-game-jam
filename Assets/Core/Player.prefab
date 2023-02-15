@@ -136,11 +136,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a29316cecf676dd49a5d67057ae3e517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  touchingExit: 0
   playerCanMove: 1
   doorNeededToTouch: {fileID: 0}
   otherPlayer: {fileID: 0}
-  moveSpeed: 5
-  jumpForce: 9
+  moveSpeed: 7
+  jumpForce: 13
   mirrored: 0
   canJump: 0
-  touchingExit: 0

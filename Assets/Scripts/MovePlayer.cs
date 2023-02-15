@@ -42,24 +42,38 @@ public class MovePlayer : MonoBehaviour
             return;
 
         float moveHorizontal = Input.GetAxis("Horizontal");
-        float moveVertical = Input.GetAxis("Vertical");
+        // float moveVertical = Input.GetAxis("Vertical");
 
-        moveDirection = new Vector2(moveHorizontal, moveVertical);
+        moveDirection = new Vector2(moveHorizontal, 1f);
 
-        Move();
+        Move2();
     }
 
-    void Move()
+    // void Move()
+    // {
+    //     if (Input.GetKey(KeyCode.A))
+    //         rigid.velocity = moveDirection * moveSpeed;// * Time.deltaTime;
+    //     if (Input.GetKey(KeyCode.D))
+    //         rigid.velocity = moveDirection * moveSpeed;// * Time.deltaTime;
+
+    //     if (Input.GetKeyDown(KeyCode.Space) && canJump)
+    //         rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+    // }
+
+    void Move2()
     {
-        if (Input.GetKey(KeyCode.A))
-            rigid.velocity = moveDirection * moveSpeed;// * Time.deltaTime;
-        if (Input.GetKey(KeyCode.D))
-            rigid.velocity = moveDirection * moveSpeed;// * Time.deltaTime;
+        float moveHorizontal = Input.GetAxis("Horizontal");
+        moveDirection = new Vector2(moveHorizontal, 1f);
+
+        float velocityY = rigid.velocity.y;
+        Vector2 newVelocity = moveDirection * moveSpeed;
+        newVelocity.y = velocityY;
+
+        rigid.velocity = newVelocity;
 
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
             rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     }
-
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -67,29 +81,32 @@ public class MovePlayer : MonoBehaviour
             canJump = true;
     }
 
-
-    void OnCollisionStay2D(Collision2D other)
+    
+    void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject == doorNeededToTouch)
         {
             touchingExit = true;
     
-            if (otherPlayer == null)
-                StartCoroutine("MoveToNextLevel");
+            if (otherPlayer == null && moveToNextLevel == null)
+                moveToNextLevel = StartCoroutine("MoveToNextLevel");
             
-            else if (otherPlayer.touchingExit)
-                StartCoroutine("MoveToNextLevel");
+            else if (otherPlayer.touchingExit && moveToNextLevel == null)
+                moveToNextLevel = StartCoroutine("MoveToNextLevel");
         }
     }
+
+    Coroutine moveToNextLevel;
 
 
     IEnumerator MoveToNextLevel()
     {
+        moveToNextLevel = null;        
         playerCanMove = false;
+
         Debug.Log("MoveToNextLevel");
 
         // var nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         yield return null;
     }
@@ -113,8 +130,6 @@ public class MovePlayer : MonoBehaviour
             canJump = false;
         if (other.gameObject.tag == "Door")
             touchingExit = false;
-        // if (other.gameObject.tag == "Barrier")
-            // direction = -direction;
     }
 
     

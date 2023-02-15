@@ -1,3 +1,4 @@
+using System.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class OpenDoor : MonoBehaviour
     void Awake()
     {
         originalRotation = door.transform.rotation;
+        
     }
 
     void Update()
