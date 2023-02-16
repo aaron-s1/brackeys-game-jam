@@ -7,29 +7,34 @@ using UnityEngine.SceneManagement;
 public class MovePlayer : MonoBehaviour
 {
     public bool touchingExit;
-    public bool playerCanMove = true;
-    public GameObject doorNeededToTouch;
-    public MovePlayer otherPlayer = null;
+
+    [SerializeField] GameObject doorNeededToTouch;
+    [SerializeField] MovePlayer otherPlayer = null;
 
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpForce = 5f;
-    [SerializeField] bool mirrored;
-    Rigidbody2D rigid;
+    [SerializeField] bool mirroredPlayer;
 
     Vector2 moveDirection;
+    Animator animator;
+    Rigidbody2D rigid;
+    public Camera CM_Camera;
 
-    public bool canJump;
+    // Coroutine lockAnimator;
 
+    [HideInInspector] bool canJump;
+    [HideInInspector] bool playerCanMove = true;
 
-///
     int currentLevel;
-///
+
     
     void Awake()
     {
+        animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
+        renderer = GetComponent<SpriteRenderer>();
 
-        if (mirrored)
+        if (mirroredPlayer)
             moveSpeed *= -1f;
 
         currentLevel = SceneManager.GetActiveScene().buildIndex + 1;
@@ -42,14 +47,13 @@ public class MovePlayer : MonoBehaviour
             return;
 
         float moveHorizontal = Input.GetAxis("Horizontal");
-        // float moveVertical = Input.GetAxis("Vertical");
 
         moveDirection = new Vector2(moveHorizontal, 1f);
 
-        Move2();
+        Move();    // now sustains mid-air momentum
     }
 
-    // void Move()
+    // void OldMove()
     // {
     //     if (Input.GetKey(KeyCode.A))
     //         rigid.velocity = moveDirection * moveSpeed;// * Time.deltaTime;
@@ -60,7 +64,19 @@ public class MovePlayer : MonoBehaviour
     //         rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     // }
 
-    void Move2()
+    SpriteRenderer renderer;
+
+    void Move()
+    {
+        AssignDirectionalMovement();
+        SetMovingAnimation();
+        SetRotation();
+        Jump();
+    }
+
+
+
+    void AssignDirectionalMovement()
     {
         float moveHorizontal = Input.GetAxis("Horizontal");
         moveDirection = new Vector2(moveHorizontal, 1f);
@@ -70,10 +86,58 @@ public class MovePlayer : MonoBehaviour
         newVelocity.y = velocityY;
 
         rigid.velocity = newVelocity;
-
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
-            rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
     }
+
+
+    void SetMovingAnimation()
+    {   
+        // if (!animator.GetBool("jump") && lockAnimator == null)
+        // if (lockAnimator == null)
+        // animator.SetBool("jump", false);
+        if (Mathf.Abs(rigid.velocity.x) >= 0.1f)
+            animator.SetBool("walk", true);
+
+        // This will cause Animator to transition to default Idle state.
+        else
+            animator.SetBool("walk", false);
+    }
+
+
+    void SetRotation()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (!mirroredPlayer)
+                transform.eulerAngles = new Vector2(transform.eulerAngles.x, 0);
+            else if (mirroredPlayer)
+                transform.eulerAngles = new Vector2(transform.eulerAngles.x, 180);
+        }
+
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            if (!mirroredPlayer)
+                transform.eulerAngles = new Vector2(transform.eulerAngles.x, 180f);
+            if (mirroredPlayer)
+                transform.eulerAngles = new Vector2(transform.eulerAngles.x, 0);
+        }
+    }
+
+
+    void Jump()
+    {
+        if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        {
+            rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            // animator.SetBool("jump", true);
+            // lockAnimator = StartCoroutine("LockAnimator");
+        }
+    }
+
+
+    public float testLock;
+
+
+    #region COLLISIONS
 
     void OnCollisionEnter2D(Collision2D other)
     {
@@ -81,7 +145,16 @@ public class MovePlayer : MonoBehaviour
             canJump = true;
     }
 
-    
+
+    void OnCollisionExit2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Ground")
+            canJump = false;
+        if (other.gameObject.tag == "Door")
+            touchingExit = false;
+    }
+
+
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject == doorNeededToTouch)
@@ -95,6 +168,9 @@ public class MovePlayer : MonoBehaviour
                 moveToNextLevel = StartCoroutine("MoveToNextLevel");
         }
     }
+    
+    #endregion
+
 
     Coroutine moveToNextLevel;
 
@@ -124,16 +200,12 @@ public class MovePlayer : MonoBehaviour
         playerCanMove = true;
     }
 
-    void OnCollisionExit2D(Collision2D other)
+
+
+
+    IEnumerator LockAnimator()
     {
-        if (other.gameObject.tag == "Ground")
-            canJump = false;
-        if (other.gameObject.tag == "Door")
-            touchingExit = false;
-    }
-
-    
-
-    // void CanJump() =>
-    //     canJump = !canJump;
+        yield return new WaitForEndOfFrame();
+        // lockAnimator = null;
+    }    
 }

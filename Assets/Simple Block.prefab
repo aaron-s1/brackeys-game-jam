@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 48694232094163039}
   - component: {fileID: 48694232094163008}
   m_Layer: 0
-  m_Name: Center Block (2)
+  m_Name: Simple Block
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
