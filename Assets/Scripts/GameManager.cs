@@ -23,12 +23,10 @@ public class GameManager : MonoBehaviour
         {
             textLoadNext = false;
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
-                // currentLevel++);
+            // currentLevel++);
         }
 
         if (Input.GetKeyDown(KeyCode.Return))
-        {
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        }
     }
 }

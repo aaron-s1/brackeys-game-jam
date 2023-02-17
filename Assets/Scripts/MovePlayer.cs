@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,8 +9,10 @@ public class MovePlayer : MonoBehaviour
 {
     public bool touchingExit;
 
-    [SerializeField] GameObject doorNeededToTouch;
     [SerializeField] MovePlayer otherPlayer = null;
+    [SerializeField] GameObject doorNeededToTouch;
+    [SerializeField] GameObject arrowPointingTowardsExit;
+    [SerializeField] GameObject checkmarkWhenAtExitDoor;
 
     [SerializeField] float moveSpeed;
     [SerializeField] float jumpForce = 5f;
@@ -18,7 +21,6 @@ public class MovePlayer : MonoBehaviour
     Vector2 moveDirection;
     Animator animator;
     Rigidbody2D rigid;
-    public Camera CM_Camera;
 
     // Coroutine lockAnimator;
 
@@ -33,6 +35,9 @@ public class MovePlayer : MonoBehaviour
         animator = GetComponent<Animator>();
         rigid = GetComponent<Rigidbody2D>();
         renderer = GetComponent<SpriteRenderer>();
+        
+        GetComponentInChildren<CinemachineVirtualCamera>().LookAt = doorNeededToTouch.transform;
+        
 
         if (mirroredPlayer)
             moveSpeed *= -1f;
@@ -150,26 +155,49 @@ public class MovePlayer : MonoBehaviour
     {
         if (other.gameObject.tag == "Ground")
             canJump = false;
-        if (other.gameObject.tag == "Door")
-            touchingExit = false;
     }
+
 
 
     void OnTriggerStay2D(Collider2D other)
     {
         if (other.gameObject == doorNeededToTouch)
         {
-            touchingExit = true;
+            if (!touchingExit)
+                touchingExit = true;
+
+            SetActiveObjState(arrowPointingTowardsExit, false);
+            SetActiveObjState(checkmarkWhenAtExitDoor, true);
     
-            if (otherPlayer == null && moveToNextLevel == null)
-                moveToNextLevel = StartCoroutine("MoveToNextLevel");
+            // if (otherPlayer == null && moveToNextLevel == null)
+            //     moveToNextLevel = StartCoroutine("MoveToNextLevel");
             
-            else if (otherPlayer.touchingExit && moveToNextLevel == null)
-                moveToNextLevel = StartCoroutine("MoveToNextLevel");
+            // else if (otherPlayer.touchingExit && moveToNextLevel == null)
+            //     moveToNextLevel = StartCoroutine("MoveToNextLevel");
         }
     }
-    
+
+
+    void OnTriggerExit2D(Collider2D other)
+    {
+        if (other.gameObject == doorNeededToTouch) {
+            print("should be an arrow");
+            touchingExit = false;
+            SetActiveObjState(checkmarkWhenAtExitDoor, false);
+            SetActiveObjState(arrowPointingTowardsExit, true);
+        }        
+    }
+
     #endregion
+
+    void SetActiveObjState(GameObject obj = null, bool state = false)
+    {
+        if (obj.activeInHierarchy != state)
+            obj.SetActive(state);
+    }
+
+    // 
+        
 
 
     Coroutine moveToNextLevel;
@@ -183,7 +211,7 @@ public class MovePlayer : MonoBehaviour
         Debug.Log("MoveToNextLevel");
 
         // var nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         yield return null;
     }
 
