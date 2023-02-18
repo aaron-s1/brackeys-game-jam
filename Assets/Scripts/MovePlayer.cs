@@ -18,6 +18,8 @@ public class MovePlayer : MonoBehaviour
     [SerializeField] float jumpForce = 5f;
     [SerializeField] bool mirroredPlayer;
 
+    [SerializeField] float waitTimeBeforeNextLevelLoad = 1f;
+
     Vector2 moveDirection;
     Animator animator;
     Rigidbody2D rigid;
@@ -25,7 +27,7 @@ public class MovePlayer : MonoBehaviour
     // Coroutine lockAnimator;
 
     [HideInInspector] bool canJump;
-    [HideInInspector] bool playerCanMove = true;
+    [HideInInspector] bool acceptingPlayerInput = true;
 
     int currentLevel;
 
@@ -48,7 +50,7 @@ public class MovePlayer : MonoBehaviour
 
     void Update()
     {
-        if (!playerCanMove)
+        if (!acceptingPlayerInput)
             return;
 
         float moveHorizontal = Input.GetAxis("Horizontal");
@@ -73,6 +75,9 @@ public class MovePlayer : MonoBehaviour
 
     void Move()
     {
+        if (!acceptingPlayerInput)
+            return;
+
         AssignDirectionalMovement();
         SetMovingAnimation();
         SetRotation();
@@ -169,11 +174,13 @@ public class MovePlayer : MonoBehaviour
             SetActiveObjState(arrowPointingTowardsExit, false);
             SetActiveObjState(checkmarkWhenAtExitDoor, true);
     
-            // if (otherPlayer == null && moveToNextLevel == null)
-            //     moveToNextLevel = StartCoroutine("MoveToNextLevel");
+            // StartCoroutine("WaitBeforeNextSceneLoad");
             
-            // else if (otherPlayer.touchingExit && moveToNextLevel == null)
-            //     moveToNextLevel = StartCoroutine("MoveToNextLevel");
+            if (otherPlayer == null)
+                moveToNextLevel = StartCoroutine("MoveToNextLevel");
+            
+            else if (otherPlayer.touchingExit)
+                moveToNextLevel = StartCoroutine("MoveToNextLevel");
         }
     }
 
@@ -181,7 +188,6 @@ public class MovePlayer : MonoBehaviour
     void OnTriggerExit2D(Collider2D other)
     {
         if (other.gameObject == doorNeededToTouch) {
-            print("should be an arrow");
             touchingExit = false;
             SetActiveObjState(checkmarkWhenAtExitDoor, false);
             SetActiveObjState(arrowPointingTowardsExit, true);
@@ -190,43 +196,46 @@ public class MovePlayer : MonoBehaviour
 
     #endregion
 
+
     void SetActiveObjState(GameObject obj = null, bool state = false)
     {
         if (obj.activeInHierarchy != state)
             obj.SetActive(state);
     }
 
-    // 
-        
-
 
     Coroutine moveToNextLevel;
 
 
     IEnumerator MoveToNextLevel()
-    {
-        moveToNextLevel = null;        
-        playerCanMove = false;
+    {        
+        moveToNextLevel = null;
+        acceptingPlayerInput = false;
+        rigid.velocity = new Vector2(0,0);
+        animator.SetBool("walk", false);
+        animator.SetBool("jump", false);
+
+        yield return new WaitForSeconds(waitTimeBeforeNextLevelLoad);
 
         Debug.Log("MoveToNextLevel");
 
+        SceneManager.LoadScene(currentLevel++);
         // var nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         yield return null;
     }
 
 
-    IEnumerator WaitBeforeNextSceneLoad()
-    {
-        yield break;
+    // IEnumerator WaitBeforeNextSceneLoad()
+    // {
+    //     // yield break;
 
-        yield return new WaitForSeconds(2f);
-        SceneManager.LoadScene(currentLevel++);
+    //     // yield return new WaitForSeconds(2f);
 
-        transform.position = new Vector3(10.9f, 0.83f, -1.04f);
-        yield return new WaitForSeconds(5f);        
-        playerCanMove = true;
-    }
+    //     // transform.position = new Vector3(10.9f, 0.83f, -1.04f);
+    //     // yield return new WaitForSeconds(5f);        
+    //     // playerCanMove = true;
+    // }
 
 
 
