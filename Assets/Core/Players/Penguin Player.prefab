@@ -476,6 +476,7 @@ MonoBehaviour:
   moveSpeed: 7
   jumpForce: 7
   mirroredPlayer: 0
+  waitTimeBeforeNextLevelLoad: 1
   testLock: 0
 --- !u!70 &3686791476013263395
 CapsuleCollider2D:
