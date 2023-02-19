@@ -217,8 +217,6 @@ public class MovePlayer : MonoBehaviour
 
         yield return new WaitForSeconds(waitTimeBeforeNextLevelLoad);
 
-        Debug.Log("MoveToNextLevel");
-
         SceneManager.LoadScene(currentLevel++);
         // var nextLevel = SceneManager.GetActiveScene().buildIndex + 1;
         // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
