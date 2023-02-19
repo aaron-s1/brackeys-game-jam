@@ -26,8 +26,8 @@ public class MovePlayer : MonoBehaviour
 
     // Coroutine lockAnimator;
 
-    [HideInInspector] bool canJump;
-    [HideInInspector] bool acceptingPlayerInput = true;
+    public bool canJump;
+    public bool acceptingPlayerInput = true;
 
     int currentLevel;
 
@@ -133,11 +133,14 @@ public class MovePlayer : MonoBehaviour
     }
 
 
+    // bool alreadyJumping;
+
     void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && canJump)
+        if (Input.GetKeyDown(KeyCode.Space) && canJump) //&& !alreadyJumping)
         {
             rigid.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+            // alreadyJumping = true;
             // animator.SetBool("jump", true);
             // lockAnimator = StartCoroutine("LockAnimator");
         }
@@ -151,8 +154,11 @@ public class MovePlayer : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.tag == "Ground" || other.gameObject.tag == "Platform")
-            canJump = true;
+        if (other.gameObject.tag == "Platform")
+        {
+            // alreadyJumping = false;
+            canJump = true;            
+        }
     }
 
 
@@ -162,10 +168,20 @@ public class MovePlayer : MonoBehaviour
             canJump = false;
     }
 
+    void OnCollisionStay2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "Ground") //&& !alreadyJumping)
+        {
+            canJump = true;            
+        }        
+    }
+
 
 
     void OnTriggerStay2D(Collider2D other)
     {
+
+
         if (other.gameObject == doorNeededToTouch)
         {
             if (!touchingExit)

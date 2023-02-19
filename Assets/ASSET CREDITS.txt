@@ -1,0 +1,36 @@
+(Character sprites)
+2D Character Sprite Animation - Penguin
+by Nine Pines Animation
+https://assetstore.unity.com/packages/2d/characters/2d-character-sprite-animation-penguin-236747
+
+
+(Tile Sprites)
+"Pixel Platformer Art Pack"
+by HyperBrid
+https://assetstore.unity.com/packages/2d/environments/pixel-platformer-art-pack-165498
+
+
+(Dotted Arrow)
+"Dotted Arrow"
+by Kalkatos
+https://assetstore.unity.com/packages/tools/gui/dotted-arrow-213121
+
+
+(Background Music)
+"Free Casual Music Pack"
+by mk.matheusklein
+https://assetstore.unity.com/packages/audio/music/free-casual-music-pack-242591
+
+
+(Door.)
+"Metal Door"
+by SimViz
+https://assetstore.unity.com/packages/3d/props/metal-door-5397
+
+
+(Sprites or something; maybe unused?)
+"Free 2D Mega Pack"
+by Brackeys
+https://assetstore.unity.com/packages/2d/free-2d-mega-pack-177430
+
+

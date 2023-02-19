@@ -9,11 +9,19 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 48694232094163008, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_Size.x
-      value: 1.0168343
+      value: 0.9707296
+      objectReference: {fileID: 0}
+    - target: {fileID: 48694232094163008, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Size.y
+      value: 0.85125923
       objectReference: {fileID: 0}
     - target: {fileID: 48694232094163008, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_Offset.x
-      value: 0.0017680824
+      value: 0.0017920732
+      objectReference: {fileID: 0}
+    - target: {fileID: 48694232094163008, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.01654981
       objectReference: {fileID: 0}
     - target: {fileID: 48694232094163008, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_SpriteTilingProperty.oldSize.x
@@ -77,12 +85,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 48694232094163010, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_Name
-      value: Center Block (4) Variant
+      value: Center Block Variant
       objectReference: {fileID: 0}
     - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 7632643131244650057, guid: 6acc3cc9a4173b644bb11df9d60a0818, type: 3}
+    - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.8528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.8528302
+      objectReference: {fileID: 0}
+    - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 48694232094163038, guid: 49365da5ba23bed45b73ce1b7960890f, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

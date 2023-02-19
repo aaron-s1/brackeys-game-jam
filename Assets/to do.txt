@@ -1,0 +1,24 @@
+Character:
+~ Fix/add 1-frame jump animation
+
+
+Scenes:
+~ Level 4
+~ Ending
+~ Level reset hotkey
+
+~ Game reset hotkey?
+~ Scene transitions?
+
+
+Misc:
+- Particle effects
+- Sound effects
+- Bug fixing
+
+
+Post:
+~ Delete unused assets
+~ Setup game page: screenshots, fix any embedding issues
+~ Commit, push.
+
